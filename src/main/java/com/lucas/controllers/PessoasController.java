@@ -18,8 +18,6 @@ public class PessoasController {
     @PostMapping(value = "/cadastro/pessoa")
     public ResponseEntity<PessoasEntity> createPessoa(@RequestBody PessoasEntity pessoasEntity) {
         PessoasEntity saved = service.save(pessoasEntity);
-//        service.save(pessoasEntity);
         return ResponseEntity.status(200).body(saved);
-//        return ResponseEntity.ok().build();
     }
 }

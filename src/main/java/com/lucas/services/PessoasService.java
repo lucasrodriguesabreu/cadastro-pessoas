@@ -1,9 +1,8 @@
 package com.lucas.services;
 
 import com.lucas.entities.PessoasEntity;
-import com.lucas.exceptions.CpfException;
-import com.lucas.exceptions.EmailException;
 import com.lucas.repositories.PessoasRepository;
+import com.lucas.validators.PessoasValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,19 +11,10 @@ import org.springframework.stereotype.Service;
 public class PessoasService {
 
     private final PessoasRepository repository;
+    private final PessoasValidator validator;
 
     public PessoasEntity save(PessoasEntity pessoasEntity) {
-        if (pessoasEntity.getId() != null && repository.existsById(pessoasEntity.getId())) {
-            throw new IllegalArgumentException("Essa pessoa já existe.");
-        }
-
-        if (repository.existsByCpf(pessoasEntity.getCpf())) {
-            throw new CpfException("CPF já cadastrado.");
-        }
-
-        if(repository.existsByEmail(pessoasEntity.getEmail())) {
-            throw new EmailException("Email já cadastrado.");
-        }
+        validator.validate(pessoasEntity);
 
         PessoasEntity pessoa = new PessoasEntity();
         pessoa.setNome(pessoasEntity.getNome());
